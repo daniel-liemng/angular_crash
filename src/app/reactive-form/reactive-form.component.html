@@ -1,0 +1,148 @@
+<div class="container">
+  <h1>Reactive Form</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group mb-3">
+      <label>Name</label>
+      <input
+        name="fname"
+        formControlName="fname"
+        type="text"
+        placeholder="Full name"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': fname.touched && fname.invalid
+        }"
+      />
+
+      <div
+        *ngIf="fname.touched && fname.invalid"
+        class="alert alert-danger mt-2"
+      >
+        <div *ngIf="fname.errors?.required">Name is required</div>
+        <div *ngIf="fname.errors?.minlength">
+          Name is at least 5 characters long
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label>Email</label>
+      <input
+        name="email"
+        formControlName="email"
+        type="email"
+        placeholder="Email"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': email.touched && email.invalid
+        }"
+      />
+
+      <div
+        *ngIf="email.touched && email.invalid"
+        class="alert alert-danger mt-2"
+      >
+        <div *ngIf="email.errors?.required">Email is required</div>
+        <div *ngIf="email.errors?.email">Email is invalid</div>
+      </div>
+    </div>
+
+    <!-- Contact Details - Nested Form Group -->
+    <div formGroupName="contactDetails">
+      <div class="form-group mb-3">
+        <label>Address</label>
+        <textarea
+          name="address"
+          formControlName="address"
+          cols="30"
+          rows="10"
+          placeholder="Address"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': address.touched && address.invalid
+          }"
+        ></textarea>
+
+        <div
+          *ngIf="address.touched && address.invalid"
+          class="alert alert-danger mt-2"
+        >
+          <div *ngIf="address.errors?.required">Address is required</div>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Shipping Address</label>
+        <textarea
+          name="shippingAddress"
+          formControlName="shippingAddress"
+          cols="30"
+          rows="10"
+          placeholder="Shipping Address"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': shippingAddress.touched && shippingAddress.invalid
+          }"
+        ></textarea>
+
+        <div
+          *ngIf="shippingAddress.touched && shippingAddress.invalid"
+          class="alert alert-danger mt-2"
+        >
+          <div *ngIf="shippingAddress.errors?.required">
+            Shipping Address is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Contact Number</label>
+        <input
+          name="contactNo"
+          formControlName="contactNo"
+          type="text"
+          placeholder="Contact Number"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': contactNo.touched && contactNo.invalid
+          }"
+        />
+
+        <div
+          *ngIf="contactNo.touched && contactNo.invalid"
+          class="alert alert-danger mt-2"
+        >
+          <div *ngIf="contactNo.errors?.required">
+            Contact number is required
+          </div>
+          <div *ngIf="contactNo.errors?.pattern">Contact number is invalid</div>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Skills</label>
+        <input
+          #skill
+          (keyup.enter)="addSkills(skill)"
+          type="text"
+          placeholder="Skills"
+          class="form-control"
+        />
+
+        <ul class="list-group">
+          <li
+            *ngFor="let skill of Skills.controls; let i = index"
+            class="list-group-item"
+          >
+            {{ skill.value }}
+            <a (click)="removeSkills(i)" class="btn btn-sm btn-danger">X</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <button [disabled]="form.invalid" type="submit" class="btn btn-primary">
+      Submit
+    </button>
+  </form>
+</div>
